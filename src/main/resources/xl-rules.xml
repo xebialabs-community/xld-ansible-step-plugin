@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright 2018 XEBIALABS
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+
+<rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
+    <step-macro name="ansible">
+        <parameters>
+            <parameter name="description" type="string"/>
+            <parameter name="order" type="integer"/>
+            <parameter name="modulename" type="string" description="Name of the ansible module"/>
+            <parameter name="moduleargs" type="string" description="Module arguments"/>
+        </parameters>
+        <steps>
+            <os-script>
+                <description expression="true">macro['description']</description>
+                <order expression="true">macro['order']</order>
+                <script>ansible_step/ansible.sh.ftl</script>
+                <target-host expression="true">deployed.container.host.ansibleControler</target-host>
+                <upload-artifacts>false</upload-artifacts>
+                <freemarker-context>
+                    <modulename expression="true">macro['modulename']</modulename>
+                    <moduleargs expression="true">macro['moduleargs']</moduleargs>
+                    <target expression="true">deployed.container</target>
+                    <host expression="true">deployed.container.host</host>
+                    <description expression="true">macro['description']</description>
+                </freemarker-context>
+                <classpath-resources>
+                    <value>ansible_step/inventory/xldeploy_ansible_inventory.ftl</value>
+                </classpath-resources>
+            </os-script>
+        </steps>
+    </step-macro>
+
+
+</rules>
