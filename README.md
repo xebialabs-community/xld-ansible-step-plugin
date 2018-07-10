@@ -105,6 +105,8 @@ The rule to add a new apt ppa repository still using the [apt_repository](https:
 
 ![preview](images/ansible-step-in-action-step-preview.png)
 
+![ansible-controler](images/ansible-controler.png)
+
 
 
 
