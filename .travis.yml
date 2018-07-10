@@ -1,11 +1,16 @@
 language: java
+sudo: false
 deploy:
   provider: releases
   api_key:
     secure: O9a3hC4yHZgvHzwab1jqhhw0aU6sD3D+yWrUQwbc8OF9IOVhuaxORuzqDs0aBzBI/EuxISzrVVXAUZp/8FBku35zfjqCPaLwFS2wCLWrCCAXKkd/qB7abK/TQuZQx5w7wPhH930Dkejbn8fKVRV86Aoo3ooG7SypiMzA2khOSm2MIyZfR2Zn8yOkUNBCNOOU6aZrmpGqIjC6S1eB1lJbSvyWLQY8Vi2tRgaatsCDZsmqkjeAsrjBT8lnRg/DckaHMgyiChgGTe4755yBq6EUQCyAi6KxtnWO1KgT6JKSWLTVLvqhXLLQyuIRnnR9izgqG7L5TMezBK9X3fcGb46t5cA2mB8PhFKZmUpYp2N4BmRYVhoV8bak6QtwYuAIim80SUgEiKfH8PT86lNObfDl3fRLyLmCnfO9zuqnFyeDqzzLyPvli3XswixYUh3x3vhf+0xXTG67Vl1+jRWfVJZspkbzEV5JmsvGrmulp23Yw8NK4pnxLDR1rqA/sg/YChFNdX1/AIlUn28sgbO1OJXXWaInCLeDM1ojrdEP8FekHmBe+Lsh58M7i3nuLZOwjGIGlFiKkzkqEMQccxF9R97fDPg934AQDVhw4JIV6aB6cQ2pCcrVq8a2I81ZX2nYxwYp4qZsJ68GtWAQOV4XUmSBkeOOoIQAK/jOSUq4ioE+xyc=
-  file: build//distributions/xld-ansible-step-plugin-1.0.0.xldp
+  file_glob: true
+  file: build/distributions/*
+  skip_cleanup: true
   on:
     repo: xebialabs-community/xld-ansible-step-plugin
+    all_branches: true
+    tags: true
 notifications:
   hipchat:
     rooms:
