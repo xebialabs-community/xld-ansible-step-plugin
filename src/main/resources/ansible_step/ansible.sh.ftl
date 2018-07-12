@@ -27,9 +27,8 @@ echo "# - name: ${description}"
 echo "#   ${modulename}: <#list argsline as item>${item} </#list>"
 echo "  "
 
-## --sudo
-echo 'ansible ${host.name} --inventory-file=ansible_step/inventory -v -m ${modulename} -a "<#list argsline as item>${item} </#list>"'
-ansible ${host.name} --inventory-file=ansible_step/inventory -v -m ${modulename} -a "<#list argsline as item>${item} </#list>"
+echo '${host.ansibleControler.ansiblePath} ${host.name} --inventory-file=ansible_step/inventory -v -m ${modulename} -a "<#list argsline as item>${item} </#list>"'
+${host.ansibleControler.ansiblePath} ${host.name} --inventory-file=ansible_step/inventory -v -m ${modulename} -a "<#list argsline as item>${item} </#list>"
 
 
 
