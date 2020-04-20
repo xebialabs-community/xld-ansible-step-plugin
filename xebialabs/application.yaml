@@ -1,0 +1,30 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/provision-calculator
+  type: udm.Application
+  lastVersion: 0.0.12
+  children:
+  - name: 0.0.12
+    type: udm.DeploymentPackage
+    deployables:
+    - name: tomcat
+      type: ansible.PlaybookSpec
+      scanPlaceholders: False
+      file: !file "artifacts/provision-calculator/0.0.12/roles"
+      tags:
+      - frontend
+      roles:
+      - tomcat8
+      variables:
+        public_key_path: |-
+          /Users/bmoussaud/Workspace/xebialabs-community/xld-terraform-enterprise-plugin/xebialabs/artifacts/keypairs/id_rsa.pub
+    - name: bdd
+      type: ansible.PlaybookSpec
+      scanPlaceholders: False
+      file: !file "artifacts/provision-calculator/0.0.12/roles2"
+      tags:
+      - backend
+      roles:
+      - mysql

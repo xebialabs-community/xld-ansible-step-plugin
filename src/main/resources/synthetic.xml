@@ -18,6 +18,16 @@
         <property name="ansibleControler" required="false" kind="ci" referenced-type="overthere.Host"
                   category="Ansible"/>
         <property name="ansiblePath" required="false" default="/usr/local/bin/ansible" category="Ansible"/>
+        <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook"
+                  category="Ansible"/>
     </type-modification>
+
+    <type type="ansible.Playbook" extends="udm.BaseDeployedArtifact"
+          container-type="overthere.Host"
+          deployable-type="ansible.PlaybookSpec">
+        <generate-deployable type="ansible.PlaybookSpec" extends="udm.BaseDeployableFolderArtifact"/>
+        <property name="roles" kind="list_of_string"/>
+        <property name="variables" kind="map_string_string" required="false"/>
+    </type>
 
 </synthetic>

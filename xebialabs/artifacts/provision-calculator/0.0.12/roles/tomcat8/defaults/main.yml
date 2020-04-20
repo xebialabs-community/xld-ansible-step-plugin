@@ -1,0 +1,5 @@
+# This will configure a default manager-gui and admin-gui user:
+
+admin_username: admin
+admin_password: password
+public_key_path: /home/jcla/.ssh/id_rsa.pub

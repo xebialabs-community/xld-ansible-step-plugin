@@ -40,4 +40,52 @@
     </step-macro>
 
 
+    <step-macro name="ansible-playbook">
+        <parameters>
+            <parameter name="description" type="string"/>
+            <parameter name="order" type="integer"/>
+            <parameter name="roles" type="list_of_string" description="roles to apply"/>
+            <parameter name="variables" type="map_string_string" description="variables..."/>
+        </parameters>
+        <steps>
+            <os-script>
+                <description expression="true">macro['description']</description>
+                <order expression="true">macro['order']</order>
+                <script>ansible_step/ansible-playbook.sh.ftl</script>
+                <target-host expression="true">deployed.container.host.ansibleControler</target-host>
+                <upload-artifacts>True</upload-artifacts>
+                <freemarker-context>
+                    <roles expression="true">macro['roles']</roles>
+                    <variables expression="true">macro['variables']</variables>
+                    <target expression="true">deployed.container</target>
+                    <host expression="true">deployed.container.host</host>
+                    <description expression="true">macro['description']</description>
+                </freemarker-context>
+                <classpath-resources>
+                    <value>ansible_step/inventory/xldeploy_ansible_inventory.ftl</value>
+                    <value>ansible_step/xldeploy_playbook.yml.ftl</value>
+                    <value>ansible_step/xldeploy_extravars.json.ftl</value>
+                </classpath-resources>
+            </os-script>
+        </steps>
+    </step-macro>
+
+
+    <rule name="ansible.playbool.create" scope="deployed">
+        <conditions>
+            <type>ansible.Playbook</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+        </conditions>
+        <steps>
+            <ansible-playbook>
+                <description expression="true">"apply {0} on {1}".format(deployed.name, deployed.container.name)
+                </description>
+                <order>55</order>
+                <roles expression="true">deployed.roles</roles>
+                <variables expression="true">deployed.variables</variables>
+            </ansible-playbook>
+        </steps>
+    </rule>
+
 </rules>
