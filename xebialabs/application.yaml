@@ -8,11 +8,14 @@ spec:
   children:
   - name: 0.0.12
     type: udm.DeploymentPackage
+    orchestrator:
+      - parallel-by-container
     deployables:
     - name: tomcat
-      type: ansible.PlaybookSpec
+      type: ansible.RolesSpec
+      includeDevOpsAsCodeTask: True
       scanPlaceholders: False
-      file: !file "artifacts/provision-calculator/0.0.12/roles"
+      file: !file "artifacts/provision-calculator/0.0.12/roles_frontend"
       tags:
       - frontend
       roles:
@@ -21,9 +24,10 @@ spec:
         public_key_path: |-
           /Users/bmoussaud/Workspace/xebialabs-community/xld-terraform-enterprise-plugin/xebialabs/artifacts/keypairs/id_rsa.pub
     - name: bdd
-      type: ansible.PlaybookSpec
+      type: ansible.RolesSpec
       scanPlaceholders: False
-      file: !file "artifacts/provision-calculator/0.0.12/roles2"
+      includeDevOpsAsCodeTask: True
+      file: !file "artifacts/provision-calculator/0.0.12/roles_backend"
       tags:
       - backend
       roles:

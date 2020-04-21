@@ -11,7 +11,7 @@
 -->
 ---
 - hosts: all
-  become: yes
+  become: ${become}
   roles:
 <#list roles as role>
     - { role: ${role} }

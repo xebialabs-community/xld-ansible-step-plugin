@@ -1,0 +1,10 @@
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+  - name: {{container.id}}/calculator-mysql
+    type: sql.MySqlClient
+    username: cng_user
+    password: {{cng_password}}
+    mySqlHome: /usr
+    databaseName: congruencias

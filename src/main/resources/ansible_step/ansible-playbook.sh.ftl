@@ -12,12 +12,18 @@
 export PYTHONUNBUFFERED=1
 export ANSIBLE_FORCE_COLOR=false
 export ANSIBLE_HOST_KEY_CHECKING=false
-# export ANSIBLE_STDOUT_CALLBACK=json
-# export ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s'
+#export ANSIBLE_STDOUT_CALLBACK=json
+#export ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s'
 
+mkdir ./roles
+mv ${deployed.file.path}/* ./roles
+mv ansible_step/xldeploy_playbook.yml .
 
+<#assign verbose=""/>
+<#if ansibleController.debug>
+<#assign verbose="-v"/>
 echo "= xldeploy_playbook.yml ="
-cat ansible_step/xldeploy_playbook.yml
+cat xldeploy_playbook.yml
 
 echo "= inventory = "
 cat ansible_step/inventory/xldeploy_ansible_inventory
@@ -25,16 +31,15 @@ cat ansible_step/inventory/xldeploy_ansible_inventory
 echo "= extra vars = "
 cat ansible_step/xldeploy_extravars.json
 
-mkdir ./roles
-mv ${deployed.file.path}/* ./roles
-mv ansible_step/xldeploy_playbook.yml .
+
 echo "------ "
 find . -ls
 echo "------ "
 cp -r . /tmp/ANSIBLE/
+</#if>
 
-echo "${host.ansibleControler.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory -v --extra-vars "@ansible_step/xldeploy_extravars.json"  ./xldeploy_playbook.yml"
-${host.ansibleControler.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory -v --extra-vars "@ansible_step/xldeploy_extravars.json"  ./xldeploy_playbook.yml
+echo "${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json"     ./xldeploy_playbook.yml"
+${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml
 
 
 

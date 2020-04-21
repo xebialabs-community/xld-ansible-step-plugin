@@ -10,6 +10,33 @@
 
 -->
 {
+    "devops_as_code_directory": "${ansibleController.devopsAsCodeDirectory}",
+     "container" : {
+        "id": "${deployed.container.id}",
+        "name":"${deployed.container.name}",
+        "address": "${deployed.container.address}",
+        "connectionType": "${deployed.container.connectionType}",
+        "os": "${deployed.container.os}",
+        "port": "${deployed.container.port}",
+        "username": "${deployed.container.port}",
+        "privateKeyFile": "${deployed.container.privateKeyFile}",
+     },
+     "container_id": "${deployed.container.id}",
+     "container_name": "${deployed.container.name}",
+     "deployedApplication" :{
+        "environment" : {
+            "id": "${deployedApplication.environment.id}",
+            "name": "${deployedApplication.environment.name}"
+        },
+        "version" : {
+            "id": "${deployedApplication.version.id}",
+            "name": "${deployedApplication.version.name}",
+            "application":{
+                "id": "${deployedApplication.version.application.id}",
+                "name": "${deployedApplication.version.application.name}",
+            }
+        }
+     },
 <#list variables?keys as envVar>
     "${envVar}":"${variables[envVar]}",
 </#list>

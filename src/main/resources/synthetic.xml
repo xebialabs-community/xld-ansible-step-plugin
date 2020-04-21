@@ -15,19 +15,38 @@
            xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
 
     <type-modification type="udm.BaseContainer">
-        <property name="ansibleControler" required="false" kind="ci" referenced-type="overthere.Host"
-                  category="Ansible"/>
-        <property name="ansiblePath" required="false" default="/usr/local/bin/ansible" category="Ansible"/>
-        <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook"
+        <property name="ansibleController" required="false" kind="ci" referenced-type="ansible.Controller"
                   category="Ansible"/>
     </type-modification>
 
-    <type type="ansible.Playbook" extends="udm.BaseDeployedArtifact"
+    <type type="ansible.Controller" extends="generic.Container">
+        <property name="ansiblePath" required="false" default="/usr/local/bin/ansible"/>
+        <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook"/>
+        <property name="devopsAsCodeDirectory" required="false" default="/tmp/devops-as-code"
+                  category="devops-as-code"/>
+        <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
+        <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
+        <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code"
+                  password="true"/>
+        <property name="debug" category="Advanced" kind="boolean" default="false"/>
+    </type>
+
+    <type type="ansible.Roles" extends="udm.BaseDeployedArtifact"
           container-type="overthere.Host"
-          deployable-type="ansible.PlaybookSpec">
-        <generate-deployable type="ansible.PlaybookSpec" extends="udm.BaseDeployableFolderArtifact"/>
+          deployable-type="ansible.RolesSpec">
+        <generate-deployable type="ansible.RolesSpec" extends="udm.BaseDeployableFolderArtifact"/>
         <property name="roles" kind="list_of_string"/>
         <property name="variables" kind="map_string_string" required="false"/>
+        <property name="includeDevOpsAsCodeTask" label="Include DevOpsAsCode task" kind="boolean" default="false" required="false" description="does the deployable contain a YAML definition and upload it to working directory"/>
+        <property name="boundConfigurationItems" hidden="false" kind="set_of_ci" as-containment="false" required="false" referenced-type="udm.BaseConfigurationItem"/>
     </type>
+
+
+    <type-modification type="ansible.RolesSpec">
+        <property name="boundTemplates" hidden="false" required="false"
+                  candidate-values-filter="filterByProvisioningPackage" description="The set of CI templates."
+                  as-containment="false"
+                  kind="set_of_ci" referenced-type="udm.Template"/>
+    </type-modification>
 
 </synthetic>

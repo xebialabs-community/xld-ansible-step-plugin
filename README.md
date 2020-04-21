@@ -23,18 +23,20 @@ The xld-ansible-step-plugin plugin is a XL Deploy plugin that adds capability to
 ## Requirements
 
 * **XL Deploy requirements**
-	* **XL Deploy**: version 5.5+
+	* **XL Deploy**: version 9.5+
 	
 ## Installation
 
 * Copy the latest JAR file from the [releases page](https://github.com/xebialabs-community/xld-ansible-step-plugin/releases) into the `XL_DEPLOY|RELEASE_SERVER/plugins` directory.
-* Restart the XL Deploy|Release server.
+* Restart the XL Deploy server.
 
 ## Usage
 
-This plugin provide a new <ansible> step that can be used by any [rules](https://docs.xebialabs.com/xl-deploy/how-to/use-a-predefined-step-in-a-rule.html).
+This plugin provides a new <ansible> & <ansible-playbook> step that can be used by any [rules](https://docs.xebialabs.com/xl-deploy/how-to/use-a-predefined-step-in-a-rule.html).
+
+This plugin provides a new deployed to deploy `ansible` roles.
  
-# Step Parameters
+# <ansible> Step Parameters
 
 | Parameter        | Type           | Description  | Required |
 | ------------- |:-------------:| :-----| ---:|
@@ -107,6 +109,22 @@ The rule to add a new apt ppa repository still using the [apt_repository](https:
 
 ![ansible-controler](images/ansible-controler.png)
 
+# <ansible-playbook> Step Parameters
+
+| Parameter        | Type           | Description  | Required |
+| ------------- |:-------------:| :-----| ---:|
+| description | String | Step description | Yes |
+| order | integer | Step order | Yes |
+| roles | String | Ansible roles | Yes |
+| variable | String | Ansible Variable to pass to the roles | Yes |
+
+
+# Deploy `ansible.Roles`
+
+This plugin includes a new CI `ansible.Roles` allowing to apply a set of `Ansible` roles to `overthere.Hosts`.
+if the Ansible roles includes a generation of YAML `devops as code` content, the plugin can apply the content to add the provisioned item to the current environment.
+To trigger this feature, the `includeDevOpsAsCodeTask` should be the set to `True` and the roles should includes a template generation, you have an exemple here: ![template](xebialabs/artifacts/provision-calculator/0.0.12/roles_frontend/tomcat8/templates/xldeploy.yaml.j2) and its usage ![in the role](xebialabs/artifacts/provision-calculator/0.0.12/roles_frontend/tomcat8/tasks/main.yml)
+ 
 
 
 

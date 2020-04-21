@@ -11,6 +11,11 @@
 
 -->
 <rules xmlns="http://www.xebialabs.com/xl-deploy/xl-rules">
+
+    <rule name="ansible.AnsibleRunner.checkAndAssign" scope="pre-plan">
+        <planning-script-path>ansible_step/planning/set_ansible_controller.py</planning-script-path>
+    </rule>
+
     <step-macro name="ansible">
         <parameters>
             <parameter name="description" type="string"/>
@@ -23,7 +28,7 @@
                 <description expression="true">macro['description']</description>
                 <order expression="true">macro['order']</order>
                 <script>ansible_step/ansible.sh.ftl</script>
-                <target-host expression="true">deployed.container.host.ansibleControler</target-host>
+                <target-host expression="true">deployed.container.host.ansibleController</target-host>
                 <upload-artifacts>false</upload-artifacts>
                 <freemarker-context>
                     <modulename expression="true">macro['modulename']</modulename>
@@ -52,14 +57,17 @@
                 <description expression="true">macro['description']</description>
                 <order expression="true">macro['order']</order>
                 <script>ansible_step/ansible-playbook.sh.ftl</script>
-                <target-host expression="true">deployed.container.host.ansibleControler</target-host>
+                <target-host expression="true">deployed.container.host.ansibleController.host</target-host>
                 <upload-artifacts>True</upload-artifacts>
                 <freemarker-context>
                     <roles expression="true">macro['roles']</roles>
                     <variables expression="true">macro['variables']</variables>
                     <target expression="true">deployed.container</target>
                     <host expression="true">deployed.container.host</host>
+                    <ansibleController expression="true">deployed.container.ansibleController</ansibleController>
                     <description expression="true">macro['description']</description>
+                    <deployedApplication expression="true">deployedApplication</deployedApplication>
+                    <become>yes</become>
                 </freemarker-context>
                 <classpath-resources>
                     <value>ansible_step/inventory/xldeploy_ansible_inventory.ftl</value>
@@ -71,20 +79,54 @@
     </step-macro>
 
 
-    <rule name="ansible.playbool.create" scope="deployed">
+    <rule name="ansible.Roles.apply" scope="deployed">
         <conditions>
-            <type>ansible.Playbook</type>
+            <type>ansible.Roles</type>
             <operation>CREATE</operation>
             <operation>MODIFY</operation>
+            <operation>NOOP</operation>
         </conditions>
         <steps>
             <ansible-playbook>
-                <description expression="true">"apply {0} on {1}".format(deployed.name, deployed.container.name)
-                </description>
+                <description expression="true">"Apply {0} on {1}".format(deployed.name, deployed.container.name)</description>
                 <order>55</order>
                 <roles expression="true">deployed.roles</roles>
                 <variables expression="true">deployed.variables</variables>
             </ansible-playbook>
+        </steps>
+    </rule>
+
+    <rule name="ansible.Roles.devopsAsCode.apply" scope="deployed">
+        <conditions>
+            <type>ansible.Roles</type>
+            <operation>CREATE</operation>
+            <operation>MODIFY</operation>
+            <operation>NOOP</operation>
+            <expression>deployed.includeDevOpsAsCodeTask</expression>
+        </conditions>
+        <steps>
+            <os-script>
+                <description expression="true">"Apply the devops-as-code definition fetched from {1}".format(deployed.container.host.name, deployed.container.name)</description>
+                <target-host expression="true">deployed.container.host.ansibleController.host</target-host>
+                <script>devops-as-code/apply.sh.ftl</script>
+                <order>90</order>
+                <freemarker-context>
+                    <yaml_file expression="true">
+                        "{0}/{1}/tmp/digital.ai_xldeploy.yaml".format(deployed.container.host.ansibleController.devopsAsCodeDirectory, deployed.container.host.name)
+                    </yaml_file>
+                    <ansibleController expression="true">deployed.container.host.ansibleController</ansibleController>
+                </freemarker-context>
+            </os-script>
+
+            <jython>
+                <description expression="true">"Add new provisioned CI from {0} to the environment".format(deployed.container.name)</description>
+                <order>95</order>
+                <script>devops-as-code/add_ci_to_env.py</script>
+                <jython-context>
+                    <environment expression="true">deployedApplication.environment</environment>
+                    <provisioned_host expression="true">deployed.container.host</provisioned_host>
+                </jython-context>
+            </jython>
         </steps>
     </rule>
 

@@ -1,0 +1,25 @@
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+- name: Infrastructure/Calculator-dev-front
+  type: overthere.SshHost
+  tags:
+  - frontend
+  ansibleControler: Infrastructure/localhost
+  os: UNIX
+  connectionType: SCP
+  address: 52.47.87.143
+  username: ubuntu
+  privateKeyFile: /Users/bmoussaud/Workspace/xebialabs-community/xld-terraform-enterprise-plugin/xebialabs/artifacts/keypairs/id_rsa
+  children:
+  - name: calculator-tomcat
+    type: tomcat.Server
+    home: /opt/run
+    startCommand: start-tomcat.sh calculator-tomcat
+    stopCommand: stop-tomcat.sh calculator-tomcat
+    startWaitTime: 10
+    stopWaitTime: 10
+    children:
+    - name: calculator-tomcat.vh
+      type: tomcat.VirtualHost
