@@ -13,9 +13,9 @@
 - name: Copy my.cnf file with root password credentials in /etc/mysql/mysql.cnf
   template: src=templates/my.cnf.j2 dest=/etc/mysql/mysql.cnf owner=root mode=0600
 
-- name: Create a new database with name 'congruencias'
+- name: Create a new database with name '{{database_name}}'
   mysql_db:
-    name: congruencias
+    name: '{{database_name}}'
     state: present
 
 - name: Update mysql root password for all root accounts
@@ -25,8 +25,8 @@
     - ::1
     - localhost
 
-- name: Create cng_user user for congruencias
-  mysql_user: user="cng_user" host="%" password={{cng_password}} priv=congruencias.*:ALL,GRANT
+- name: Create cng_user user for {{database_name}}
+  mysql_user: user="cng_user" host="%" password={{cng_password}} priv={{database_name}}.*:ALL,GRANT
 
 - name: Copy configuration file
   copy: src=mysqld.cnf dest=/etc/mysql/mysql.conf.d owner=root mode=0640

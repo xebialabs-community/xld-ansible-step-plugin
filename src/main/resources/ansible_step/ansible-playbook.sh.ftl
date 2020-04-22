@@ -31,14 +31,13 @@ cat ansible_step/inventory/xldeploy_ansible_inventory
 echo "= extra vars = "
 cat ansible_step/xldeploy_extravars.json
 
-
 echo "------ "
 find . -ls
 echo "------ "
 cp -r . /tmp/ANSIBLE/
 </#if>
 
-echo "${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json"     ./xldeploy_playbook.yml"
+echo "${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml"
 ${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml
 
 

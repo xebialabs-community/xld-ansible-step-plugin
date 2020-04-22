@@ -2,3 +2,4 @@
 
 mysql_root_password: password
 cng_password: cng_password
+database_name: petdatabase
