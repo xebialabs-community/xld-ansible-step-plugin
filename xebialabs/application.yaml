@@ -21,8 +21,7 @@ spec:
       roles:
       - tomcat8
       variables:
-        public_key_path: |-
-          /Users/bmoussaud/Workspace/xebialabs-community/xld-terraform-enterprise-plugin/xebialabs/artifacts/keypairs/id_rsa.pub
+        public_key_path: ./keypairs/id_rsa.pub
     - name: bdd
       type: ansible.RolesSpec
       scanPlaceholders: False
