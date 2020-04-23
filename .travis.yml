@@ -1,11 +1,4 @@
 language: java
-before_install:
-  - openssl aes-256-cbc -K $encrypted_4e891cdfdb85_key -iv $encrypted_4e891cdfdb85_iv
-    -in deploy_key.enc -out /tmp/deploy_key -d
-  - eval "$(ssh-agent -s)"
-  - echo -e "Host $DIST_HOST\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - chmod 600 /tmp/deploy_key
-  - ssh-add /tmp/deploy_key
 script: "./buildViaTravis.sh"
 deploy:
   - provider: releases
@@ -19,10 +12,4 @@ deploy:
       all_branches: true
       tags: true
       repo: xebialabs-community/xld-terraform-enterprise-plugin
-  - provider: script
-    skip_cleanup: true
-    script: rsync --update -raz -i $TRAVIS_BUILD_DIR/build/libs/*.jar $DIST_USER@$DIST_HOST:$DIST_PATH/${TRAVIS_REPO_SLUG#*/}/
-    on:
-      all_branches: true
-      tags: true
-      repo: xebialabs-community/xld-terraform-enterprise-plugin
+  
