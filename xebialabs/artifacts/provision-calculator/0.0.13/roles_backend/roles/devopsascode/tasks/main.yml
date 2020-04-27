@@ -1,0 +1,9 @@
+---
+- name: Generate the Devops-As-Code
+  template: src=xldeploy.yaml.j2 dest=/tmp/digital.ai_xldeploy.yaml mode=0755
+
+- name: Fetch the Devops-As-Code yaml file  on the master
+  fetch:
+    src: /tmp/digital.ai_xldeploy.yaml
+    dest: "{{ devops_as_code_directory }}"
+    flat: no

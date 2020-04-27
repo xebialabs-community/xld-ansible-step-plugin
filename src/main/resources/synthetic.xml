@@ -15,38 +15,40 @@
            xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
 
     <type-modification type="udm.BaseContainer">
-        <property name="ansibleController" required="false" kind="ci" referenced-type="ansible.Controller"
-                  category="Ansible"/>
+        <property name="ansibleController" required="false" kind="ci" referenced-type="ansible.Controller" category="Ansible"/>
     </type-modification>
 
     <type type="ansible.Controller" extends="generic.Container">
         <property name="ansiblePath" required="false" default="/usr/local/bin/ansible"/>
         <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook"/>
-        <property name="devopsAsCodeDirectory" required="false" default="/tmp/devops-as-code"
-                  category="devops-as-code"/>
+        <property name="ansibleRolePath" required="false" default="./roles" description="path where to look for the roles, by default restrict to the current directory(.) but it can point to a shared folder to manage common and shared roles"/>
+        <property name="ansibleGalaxyPath" required="false" default="/usr/local/bin/ansible-galaxy"/>
+        <property name="devopsAsCodeDirectory" required="false" default="/tmp/devops-as-code" category="devops-as-code"/>
         <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
-        <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code"
-                  password="true"/>
+        <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code" password="true"/>
         <property name="debug" category="Advanced" kind="boolean" default="false"/>
     </type>
 
     <type type="ansible.Roles" extends="udm.BaseDeployedArtifact"
-          container-type="overthere.Host"
-          deployable-type="ansible.RolesSpec">
+          container-type="overthere.Host" deployable-type="ansible.RolesSpec">
         <generate-deployable type="ansible.RolesSpec" extends="udm.BaseDeployableFolderArtifact"/>
         <property name="roles" kind="list_of_string"/>
+        <property name="galaxyRoles" kind="list_of_string" description="these roles will be downloaded using galaxy before trigerring the playbook" required="false"/>
         <property name="variables" kind="map_string_string" required="false"/>
+        <property name="variableFile" required="false" description="path to variable file if it exists in the package."/>
         <property name="includeDevOpsAsCodeTask" label="Include DevOpsAsCode task" kind="boolean" default="false" required="false" description="does the deployable contain a YAML definition and upload it to working directory"/>
         <property name="boundConfigurationItems" hidden="false" kind="set_of_ci" as-containment="false" required="false" referenced-type="udm.BaseConfigurationItem"/>
     </type>
-
 
     <type-modification type="ansible.RolesSpec">
         <property name="boundTemplates" hidden="false" required="false"
                   candidate-values-filter="filterByProvisioningPackage" description="The set of CI templates."
                   as-containment="false"
                   kind="set_of_ci" referenced-type="udm.Template"/>
+        <property name="textFileNamesRegex" default=".+\.(cfg | conf | config | ini | properties | json | yaml | yml | j2 )" category="Placeholders" description="Regular expression that matches file names of text files"/>
+        <property name="delimiters" default="// //"/>
     </type-modification>
+
 
 </synthetic>

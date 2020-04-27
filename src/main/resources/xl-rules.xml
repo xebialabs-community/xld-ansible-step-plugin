@@ -50,7 +50,9 @@
             <parameter name="description" type="string"/>
             <parameter name="order" type="integer"/>
             <parameter name="roles" type="list_of_string" description="roles to apply"/>
+            <parameter name="galaxyRoles" type="list_of_string" description="Galaxy Roles"/>
             <parameter name="variables" type="map_string_string" description="variables..."/>
+            <parameter name="variableFile" type="map_string_string" description="variableFile..."/>
         </parameters>
         <steps>
             <os-script>
@@ -58,10 +60,11 @@
                 <order expression="true">macro['order']</order>
                 <script>ansible_step/ansible-playbook.sh.ftl</script>
                 <target-host expression="true">deployed.container.host.ansibleController.host</target-host>
-                <upload-artifacts>True</upload-artifacts>
                 <freemarker-context>
                     <roles expression="true">macro['roles']</roles>
+                    <galaxyRoles expression="true">macro['galaxyRoles']</galaxyRoles>
                     <variables expression="true">macro['variables']</variables>
+                    <variableFile expression="true">macro['variableFile']</variableFile>
                     <target expression="true">deployed.container</target>
                     <host expression="true">deployed.container.host</host>
                     <ansibleController expression="true">deployed.container.ansibleController</ansibleController>
@@ -71,13 +74,13 @@
                 </freemarker-context>
                 <classpath-resources>
                     <value>ansible_step/inventory/xldeploy_ansible_inventory.ftl</value>
-                    <value>ansible_step/xldeploy_playbook.yml.ftl</value>
+                    <value>xldeploy_playbook.yml.ftl</value>
                     <value>ansible_step/xldeploy_extravars.json.ftl</value>
+                    <value>ansible.cfg.ftl</value>
                 </classpath-resources>
             </os-script>
         </steps>
     </step-macro>
-
 
     <rule name="ansible.Roles.apply" scope="deployed">
         <conditions>
@@ -91,7 +94,9 @@
                 <description expression="true">"Apply {0} on {1}".format(deployed.name, deployed.container.name)</description>
                 <order>55</order>
                 <roles expression="true">deployed.roles</roles>
+                <galaxyRoles expression="true">deployed.galaxyRoles</galaxyRoles>
                 <variables expression="true">deployed.variables</variables>
+                <variableFile expression="true">deployed.variableFile</variableFile>
             </ansible-playbook>
         </steps>
     </rule>

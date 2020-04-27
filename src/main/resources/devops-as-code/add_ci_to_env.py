@@ -37,7 +37,6 @@ for ci in list_of_ci:
 environment.members = members
 deployed.boundConfigurationItems = boundConfigurationItems
 
-print environment.members
+print(environment.members)
 
 repositoryService.update([environment])
-

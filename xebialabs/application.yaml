@@ -2,35 +2,41 @@
 apiVersion: xl-deploy/v1
 kind: Applications
 spec:
-- name: Applications/provision-calculator
-  type: udm.Application
-  lastVersion: 0.0.12
-  children:
-  - name: 0.0.12
-    type: udm.DeploymentPackage
-    orchestrator:
-      - parallel-by-container
-    deployables:
-    - name: tomcat
-      type: ansible.RolesSpec
-      includeDevOpsAsCodeTask: True
-      scanPlaceholders: False
-      file: !file "artifacts/provision-calculator/0.0.12/roles_frontend"
-      tags:
-      - frontend
-      roles:
-      - tomcat8
-      variables:
-        public_key_path: /Users/bmoussaud/.ssh/demo_keypairs/id_rsa.pub
-    - name: bdd
-      type: ansible.RolesSpec
-      scanPlaceholders: False
-      includeDevOpsAsCodeTask: True
-      file: !file "artifacts/provision-calculator/0.0.12/roles_backend"
-      variables:
-        cng_password: '{{database_password}}'
-        database_name: '{{database_name}}'
-      tags:
-      - backend
-      roles:
-      - mysql
+  - name: Applications/provision-calculator
+    type: udm.Application
+    lastVersion: 0.0.13
+    children:
+      - name: 0.0.0
+        type: udm.DeploymentPackage
+      - name: 0.0.13
+        type: udm.DeploymentPackage
+        orchestrator:
+          - parallel-by-container
+        deployables:
+          - name: tomcat
+            type: ansible.RolesSpec
+            includeDevOpsAsCodeTask: True
+            scanPlaceholders: False
+            file: !file "artifacts/provision-calculator/0.0.13/roles_frontend"
+            tags:
+              - frontend
+            roles:
+              - tomcat8
+            variables:
+              public_key_path: /Users/bmoussaud/.ssh/demo_keypairs/id_rsa.pub
+          - name: bdd
+            type: ansible.RolesSpec
+            scanPlaceholders: True
+            includeDevOpsAsCodeTask: True
+            file: !file "artifacts/provision-calculator/0.0.13/roles_backend"
+            variables:
+              mysql_root_password: '{{database_root_password}}'
+            variableFile: 'vars/main.yaml'
+            tags:
+              - backend
+            roles:
+              - geerlingguy.mysql
+              - devopsascode
+            galaxyRoles:
+              - geerlingguy.mysql
+

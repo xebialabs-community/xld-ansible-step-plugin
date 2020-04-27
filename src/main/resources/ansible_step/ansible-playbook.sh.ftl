@@ -10,14 +10,11 @@
 
 -->
 export PYTHONUNBUFFERED=1
-export ANSIBLE_FORCE_COLOR=false
-export ANSIBLE_HOST_KEY_CHECKING=false
+#export ANSIBLE_FORCE_COLOR=false
+#export ANSIBLE_HOST_KEY_CHECKING=false
 #export ANSIBLE_STDOUT_CALLBACK=json
 #export ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s'
 
-mkdir ./roles
-mv ${deployed.file.path}/* ./roles
-mv ansible_step/xldeploy_playbook.yml .
 
 <#assign verbose=""/>
 <#if ansibleController.debug>
@@ -31,16 +28,23 @@ cat ansible_step/inventory/xldeploy_ansible_inventory
 echo "= extra vars = "
 cat ansible_step/xldeploy_extravars.json
 
+echo "= ansible.cfg = "
+cat ansible.cfg
+
 echo "------ "
 find . -ls
 echo "------ "
 cp -r . /tmp/ANSIBLE/
 </#if>
 
+<#list galaxyRoles as role>
+${ansibleController.ansibleGalaxyPath} install ${role}
+</#list>
+${ansibleController.ansibleGalaxyPath} list
+
+
 echo "${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml"
 ${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml
-
-
 
 
 
