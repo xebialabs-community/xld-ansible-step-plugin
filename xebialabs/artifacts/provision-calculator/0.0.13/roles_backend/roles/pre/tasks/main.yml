@@ -1,0 +1,10 @@
+---
+- name: Install apache PIP
+  apt:
+    name: python3-pip
+    state: present
+    update_cache: yes
+
+- name: Install Python Package PyMySQL
+  pip:
+    name: PyMySQL
