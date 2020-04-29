@@ -1,0 +1,9 @@
+mysql_databases:
+  - name: //database_name//
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: "//database_username//"
+    host: "%"
+    password: "//database_password//"
+    priv: "//database_name//.*:ALL"

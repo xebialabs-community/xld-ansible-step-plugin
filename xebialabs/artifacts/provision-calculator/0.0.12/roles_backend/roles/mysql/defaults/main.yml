@@ -1,0 +1,5 @@
+# This will configure a default manager-gui and admin-gui user:
+
+mysql_root_password: password
+cng_password: cng_password
+database_name: petdatabase

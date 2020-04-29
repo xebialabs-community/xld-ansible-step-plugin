@@ -1,0 +1,10 @@
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+  - name: {{container.id}}/{{database_name}}-mysql
+    type: sql.MySqlClient
+    username: {{database_username}}
+    password: {{database_password}}
+    mySqlHome: /usr
+    databaseName: {{database_name}}

@@ -1,0 +1,46 @@
+---
+- name: Install mysql server
+  apt:
+    name: ['python3-pip','mysql-server', 'python-mysqldb']
+    update_cache: yes
+
+- name: Install Python Package PyMySQL
+  pip:
+    name: PyMySQL
+
+- name: Start the MySQL service
+  service: name=mysql state=started enabled=yes
+
+- name: Copy my.cnf file with root password credentials
+  template: src=templates/my.cnf.j2 dest=/root/.my.cnf owner=root mode=0600
+
+- name: Copy my.cnf file with root password credentials in /etc/mysql/mysql.cnf
+  template: src=templates/my.cnf.j2 dest=/etc/mysql/mysql.cnf owner=root mode=0600
+
+- name: Create a new database with name '{{database_name}}'
+  mysql_db:
+    name: '{{database_name}}'
+    state: present
+
+- name: Update mysql root password for all root accounts
+  mysql_user: name=root host={{item}} password={{mysql_root_password}}
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: Create cng_user user for {{database_name}}
+  mysql_user: user="{{database_username}}" host="%" password={{database_password}} priv={{database_name}}.*:ALL,GRANT
+
+- name: Copy configuration file
+  copy: src=mysqld.cnf dest=/etc/mysql/mysql.conf.d owner=root mode=0640
+  notify: restart mysql
+
+- name: Generate the Devops-As-Code
+  template: src=xldeploy.yaml.j2 dest=/tmp/digital.ai_xldeploy.yaml mode=0755
+
+- name: Fetch the Devops-As-Code yaml file  on the master
+  fetch:
+    src: /tmp/digital.ai_xldeploy.yaml
+    dest: "{{ devops_as_code_directory }}"
+    flat: no

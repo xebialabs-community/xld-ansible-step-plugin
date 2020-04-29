@@ -1,0 +1,29 @@
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+  - name: {{container.id}}
+    type: overthere.SshHost
+    tags:
+      - frontend
+    os: {{container.os}}
+    connectionType: {{container.connectionType}}
+    address: {{container.address}}
+    username: tomcat
+    privateKeyFile: {{container.privateKeyFile}}
+---
+apiVersion: xl-deploy/v1
+kind: Infrastructure
+spec:
+- name: {{container.id}}/calculator-tomcat
+  type: tomcat.Server
+  home: /opt/apache-tomcat-8.5.8
+  startCommand: sudo systemctl start tomcat
+  stopCommand: sudo systemctl stop tomcat
+  statusCommand: sudo systemctl status tomcat
+  startWaitTime: 1
+  stopWaitTime: 1
+  children:
+  - name: calculator-tomcat.vh
+    type: tomcat.VirtualHost
+

@@ -1,0 +1,70 @@
+---
+- name: Install Java 1.8
+  apt: name=openjdk-8-jdk update_cache=yes
+
+- name: add group "tomcat"
+  group: name=tomcat state=present
+
+- name: allow 'tomcat' group to have passwordless sudo
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%tomcat'
+    line: '%tomcat ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo -cf %s'
+
+- name: add user "tomcat"
+  user: name=tomcat groups=tomcat append=yes state=present home=/home/tomcat createhome=yes
+
+- name: create .ssh for "tomcat" user
+  file: path=/home/tomcat/.ssh owner=tomcat group=tomcat state=directory mode=0700
+
+- name: set authorized key taken from file for tomcat user
+  authorized_key:
+    user: tomcat
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - "{{ public_key_path }}"
+
+- name: Download Tomcat
+  get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomcat-8.5.8.tar.gz dest=/opt/apache-tomcat-8.5.8.tar.gz
+
+- name: Extract archive
+  command: chdir=/tmp /bin/tar xvf /opt/apache-tomcat-8.5.8.tar.gz -C /opt/ creates=/opt/apache-tomcat-8.5.8
+
+- name: Change ownership of Tomcat installation
+  file: path=/opt/apache-tomcat-8.5.8 owner=tomcat group=tomcat state=directory recurse=yes
+
+- name: Install Tomcat init script
+  copy: src=tomcat.service dest=/etc/systemd/system/tomcat.service mode=0755
+
+- name: Install context.xml in host-manager
+  copy: src=context.xml dest=/opt/apache-tomcat-8.5.8/webapps/host-manager/META-INF/context.xml mode=0640
+  notify: restart tomcat
+
+- name: Install context.xml in manager
+  copy: src=context.xml dest=/opt/apache-tomcat-8.5.8/webapps/manager/META-INF/context.xml mode=0640
+  notify: restart tomcat
+
+- name: systemd daemon-reload
+  shell: systemctl daemon-reload
+
+- name: tomcat-8-start
+  service: name=tomcat state=started enabled=yes
+
+- name: Configure Tomcat users
+  template: src=tomcat-users.xml.j2 dest=/opt/apache-tomcat-8.5.8/conf/tomcat-users.xml
+  notify: restart tomcat
+
+- name: Generate the Devops-As-Code
+  template: src=xldeploy.yaml.j2 dest=/tmp/digital.ai_xldeploy.yaml mode=0755
+
+- name: Fetch the Devops-As-Code yaml file  on the master
+  fetch:
+    src: /tmp/digital.ai_xldeploy.yaml
+    dest: "{{ devops_as_code_directory }}"
+    flat: no
+
+
+
