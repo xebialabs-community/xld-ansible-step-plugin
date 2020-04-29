@@ -11,5 +11,5 @@ deploy:
     on:
       all_branches: true
       tags: true
-      repo: xebialabs-community/xld-terraform-enterprise-plugin
+      repo: xebialabs-community/xld-ansible-step-plugin
   
