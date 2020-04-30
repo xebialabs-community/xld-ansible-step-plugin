@@ -20,9 +20,10 @@
 
     <type type="ansible.Controller" extends="generic.Container">
         <property name="ansiblePath" required="false" default="/usr/local/bin/ansible"/>
-        <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook"/>
-        <property name="ansibleRolePath" required="false" default="./roles" description="path where to look for the roles, by default restrict to the current directory(.) but it can point to a shared folder to manage common and shared roles"/>
-        <property name="ansibleGalaxyPath" required="false" default="/usr/local/bin/ansible-galaxy"/>
+        <property name="ansiblePlaybookPath" required="false" default="/usr/local/bin/ansible-playbook" category="Advanced"/>
+        <property name="ansibleRolePath" required="false" default="./roles" description="path where to look for the roles, by default restrict to the current directory(.) but it can point to a shared folder to manage common and shared roles" category="Advanced"/>
+        <property name="ansibleGalaxyPath" required="false" default="/usr/local/bin/ansible-galaxy" category="Advanced"/>
+        <property name="ansiblePythonInterpreter" required="false" default="/usr/bin/python3" category="Advanced"/>
         <property name="devopsAsCodeDirectory" required="false" default="/tmp/devops-as-code" category="devops-as-code"/>
         <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
@@ -34,11 +35,12 @@
           container-type="overthere.Host" deployable-type="ansible.RolesSpec">
         <generate-deployable type="ansible.RolesSpec" extends="udm.BaseDeployableFolderArtifact"/>
         <property name="roles" kind="list_of_string"/>
-        <property name="galaxyRoles" kind="list_of_string" description="these roles will be downloaded using galaxy before trigerring the playbook" required="false"/>
+        <property name="galaxyRoles" kind="list_of_string" description="these roles will be downloaded using galaxy before triggering the playbook" required="false"/>
         <property name="variables" kind="map_string_string" required="false"/>
         <property name="variableFile" required="false" description="path to variable file if it exists in the package."/>
         <property name="includeDevOpsAsCodeTask" label="Include DevOpsAsCode task" kind="boolean" default="false" required="false" description="does the deployable contain a YAML definition and upload it to working directory"/>
         <property name="boundConfigurationItems" hidden="false" kind="set_of_ci" as-containment="false" required="false" referenced-type="udm.BaseConfigurationItem"/>
+        <property name="applyRulesOnNOOP"  label="apply Rules On NOOP" kind="boolean" default="false" required="true" category="Advanced"/>
     </type>
 
     <type-modification type="ansible.RolesSpec">
