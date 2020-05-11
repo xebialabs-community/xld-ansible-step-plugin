@@ -11,7 +11,9 @@
 -->
 cat ${yaml_file}
 
+
+echo "\n----"
 echo "/usr/local/bin/xl --xl-deploy-password ${ansibleController.devopsAsCodePassword} --xl-deploy-username ${ansibleController.devopsAsCodeUsername} --xl-deploy-url ${ansibleController.devopsAsCodeUrl} apply  -f ${yaml_file}"
-echo "\n"
+echo "---"
 
 /usr/local/bin/xl --xl-deploy-password ${ansibleController.devopsAsCodePassword} --xl-deploy-username ${ansibleController.devopsAsCodeUsername} --xl-deploy-url ${ansibleController.devopsAsCodeUrl} apply  -f ${yaml_file}

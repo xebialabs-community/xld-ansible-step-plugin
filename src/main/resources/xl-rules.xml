@@ -171,7 +171,7 @@
                     <yaml_file expression="true">
                         "{0}/{1}/tmp/digital.ai_xldeploy.yaml".format(deployed.container.host.ansibleController.devopsAsCodeDirectory, deployed.container.host.name)
                     </yaml_file>
-                    <ansibleController expression="true">deployed.container.host.ansibleController</ansibleController>
+                    <ansibleController expression="true">repositoryService.read(deployed.container.host.ansibleController.host.id)</ansibleController>
                 </freemarker-context>
             </os-script>
 
