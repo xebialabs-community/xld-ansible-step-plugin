@@ -10,11 +10,6 @@
 
 -->
 export PYTHONUNBUFFERED=1
-#export ANSIBLE_FORCE_COLOR=false
-#export ANSIBLE_HOST_KEY_CHECKING=false
-#export ANSIBLE_STDOUT_CALLBACK=json
-#export ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s'
-
 
 <#assign verbose=""/>
 <#if ansibleController.debug>

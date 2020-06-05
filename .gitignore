@@ -6,3 +6,4 @@ supervisord.*
 .idea
 
 .DS_Store
+xl-deploy-9.6.0-server/

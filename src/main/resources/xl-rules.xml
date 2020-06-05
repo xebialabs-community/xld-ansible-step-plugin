@@ -58,7 +58,7 @@
             <os-script>
                 <description expression="true">macro['description']</description>
                 <order expression="true">macro['order']</order>
-                <script>ansible_step/ansible-playbook.sh.ftl</script>
+                <script>ansible_step/ansible-playbook</script>
                 <!-- as the ansibleController can be assigned dynamically to the host's container, we force XLD to read it again to set the target-host property -->
                 <target-host expression="true">repositoryService.read(deployed.container.host.ansibleController.host.id)</target-host>
                 <freemarker-context>

@@ -2,9 +2,10 @@
 apiVersion: xl-deploy/v1
 kind: Environments
 spec:
-  - name: Environments/calculator/provisioning.config.dev
+  - name: Environments/provisioning.config.dev
     type: udm.Dictionary
     entries:
+      env: dev
       database_name: my_petclinic_{{env}}_database
       database_username: petclinic{{env}}
     encryptedEntries:
