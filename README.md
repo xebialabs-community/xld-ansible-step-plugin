@@ -18,7 +18,7 @@ See the [XL Deploy reference manual](https://docs.xebialabs.com/xl-deploy) for b
 
 ## Overview
 
-The xld-ansible-step-plugin plugin is a XL Deploy plugin that adds capability to use call [Ansible](https://www.ansible.com/) module as a step.
+The xld-ansible-step-plugin plugin is a XL Deploy plugin that adds capability to use call [Ansible](https://www.ansible.com/) module and roles.
 
 ## Requirements
 
