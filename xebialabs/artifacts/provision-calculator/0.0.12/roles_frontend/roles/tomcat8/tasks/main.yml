@@ -13,19 +13,19 @@
     line: '%tomcat ALL=(ALL) NOPASSWD: ALL'
     validate: 'visudo -cf %s'
 
+
 - name: add user "tomcat"
   user: name=tomcat groups=tomcat append=yes state=present home=/home/tomcat createhome=yes
 
-- name: create .ssh for "tomcat" user
-  file: path=/home/tomcat/.ssh owner=tomcat group=tomcat state=directory mode=0700
+- name: generate new keypair
+  openssh_keypair:
+    path: /home/tomcat/.ssh/id_rsa
 
-- name: set authorized key taken from file for tomcat user
-  authorized_key:
-    user: tomcat
-    state: present
-    key: "{{ item }}"
-  with_file:
-    - "{{ public_key_path }}"
+- name: create .ssh for "tomcat" user
+  file:
+    path=/home/tomcat/.ssh/id_rsa.pub
+    owner=tomcat
+    group=tomcat
 
 - name: Download Tomcat
   get_url: url=http://archive.apache.org/dist/tomcat/tomcat-8/v8.5.8/bin/apache-tomcat-8.5.8.tar.gz dest=/opt/apache-tomcat-8.5.8.tar.gz

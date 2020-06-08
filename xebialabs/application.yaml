@@ -22,8 +22,6 @@ spec:
               - frontend
             roles:
               - tomcat8
-            variables:
-              public_key_path: /Users/bmoussaud/.ssh/demo_keypairs/id_rsa.pub
           - name: bdd
             type: ansible.RolesSpec
             scanPlaceholders: True
@@ -52,8 +50,6 @@ spec:
               - frontend
             roles:
               - tomcat8
-            variables:
-              public_key_path: /Users/bmoussaud/.ssh/demo_keypairs/id_rsa.pub
           - name: bdd
             type: ansible.RolesSpec
             scanPlaceholders: True

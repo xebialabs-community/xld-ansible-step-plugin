@@ -82,6 +82,10 @@
         </steps>
     </step-macro>
 
+    <rule name="ansible.Roles.sshkeys.remote.loader" scope="plan">
+        <planning-script-path>planning/ssh-keys-remote-loader.py</planning-script-path>
+    </rule>
+
     <rule name="ansible.Roles.apply" scope="deployed">
         <conditions>
             <type>ansible.Roles</type>

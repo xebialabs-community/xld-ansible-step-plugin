@@ -32,11 +32,17 @@ echo "------ "
 cp -r . /tmp/ANSIBLE/
 </#if>
 
-<#list galaxyRoles as role>
+<#list galaxyRoles>
+<#items as role>
 ${ansibleController.ansibleGalaxyPath} install ${role}
-</#list>
+${role}_EXIT_CODE=$?
+if [ ${role}_EXIT_CODE -eq 0 ]; then
+echo ERROR: Error when installing ${role}, EXIT
+exit 10
+fi
+</#items>
 ${ansibleController.ansibleGalaxyPath} list
-
+</#list>
 
 echo "${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml"
 ${ansibleController.ansiblePlaybookPath} --inventory-file=ansible_step/inventory/xldeploy_ansible_inventory ${verbose} --extra-vars "@ansible_step/xldeploy_extravars.json" ./xldeploy_playbook.yml

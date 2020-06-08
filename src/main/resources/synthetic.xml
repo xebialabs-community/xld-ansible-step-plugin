@@ -24,6 +24,7 @@
         <property name="ansibleRolePath" required="false" default="./roles" description="path where to look for the roles, by default restrict to the current directory(.) but it can point to a shared folder to manage common and shared roles" category="Advanced"/>
         <property name="ansibleGalaxyPath" required="false" default="/usr/local/bin/ansible-galaxy" category="Advanced"/>
         <property name="ansiblePythonInterpreter" required="false" default="/usr/bin/python3" category="Advanced"/>
+        <property name="ansibleSShKeyFolder" required="false" default="/tmp/ansible-sshkeys" category="Advanced"/>
         <property name="devopsAsCodeDirectory" required="false" default="/tmp/devops-as-code" category="devops-as-code"/>
         <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
@@ -40,7 +41,7 @@
         <property name="variableFile" required="false" description="path to variable file if it exists in the package."/>
         <property name="includeDevOpsAsCodeTask" label="Include DevOpsAsCode task" kind="boolean" default="false" required="false" description="does the deployable contain a YAML definition and upload it to working directory"/>
         <property name="boundConfigurationItems" hidden="false" kind="set_of_ci" as-containment="false" required="false" referenced-type="udm.BaseConfigurationItem"/>
-        <property name="applyRulesOnNOOP"  label="apply Rules On NOOP" kind="boolean" default="false" required="true" category="Advanced"/>
+        <property name="applyRulesOnNOOP" label="apply Rules On NOOP" kind="boolean" default="false" required="true" category="Advanced"/>
     </type>
 
     <type-modification type="ansible.RolesSpec">
@@ -52,5 +53,8 @@
         <property name="delimiters" default="// //"/>
     </type-modification>
 
+    <type-modification type="overthere.SshHost">
+        <property name="tmpDeleteOnDisconnect" kind="boolean" default="true" hidden="false" category="Advanced"/>
+    </type-modification>
 
 </synthetic>
