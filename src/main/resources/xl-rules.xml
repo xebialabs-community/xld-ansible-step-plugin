@@ -164,20 +164,18 @@
             <expression>deployed.includeDevOpsAsCodeTask and deployed.applyRulesOnNOOP</expression>
         </conditions>
         <steps>
-            <os-script>
+            <jython>
                 <description expression="true">"Apply the devops-as-code definition fetched from {1}".format(deployed.container.host.name, deployed.container.name)</description>
-                <!-- as the ansibleController can be assigned dynamically to the host's container, we force XLD to read it again to set the target-host property -->
-                <target-host expression="true">repositoryService.read(deployed.container.host.ansibleController.host.id)</target-host>
-                <script>devops-as-code/apply.sh.ftl</script>
+                <script>devops-as-code/apply.py</script>
                 <order>90</order>
-                <freemarker-context>
+                <jython-context>
+                    <ansible_controller_id expression="true">deployed.container.host.ansibleController.id</ansible_controller_id>
                     <yaml_file expression="true">
                         "{0}/{1}/tmp/digital.ai_xldeploy.yaml".format(deployed.container.host.ansibleController.devopsAsCodeDirectory, deployed.container.host.name)
                     </yaml_file>
-                    <ansibleController expression="true">repositoryService.read(deployed.container.host.ansibleController.host.id)</ansibleController>
-                </freemarker-context>
-            </os-script>
-
+                    <ansibleController expression="true">deployed.container.host.ansibleController</ansibleController>
+                </jython-context>
+            </jython>
             <jython>
                 <description expression="true">"Add new provisioned CI from {0} to the environment".format(deployed.container.name)</description>
                 <order>95</order>

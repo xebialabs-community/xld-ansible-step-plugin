@@ -1,0 +1,28 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+  - name: Applications/java-server-application
+    type: udm.Application
+    lastVersion: 0.1.1
+    children:
+      - name: 0.1.1
+        type: udm.DeploymentPackage
+        orchestrator:
+          - parallel-by-container
+        deployables:
+          - name: tomcat
+            type: ansible.RolesSpec
+            includeDevOpsAsCodeTask: True
+            scanPlaceholders: False
+            file: !file "artifacts/tomcat/0.1.1/roles_tomcat"
+            tags:
+              - app_server
+            roles:
+              - tomcat
+            variables:
+              tomcat_ver: '9.0.30'
+              ui_manager_user: 'manager'
+              ui_manager_pass: 'Str0ngManagerP@ssw4rd'
+              ui_admin_username: 'admin'
+              ui_admin_pass: 'Str0#ngManagerP@@@ssword'

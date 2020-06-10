@@ -1,0 +1,50 @@
+---
+apiVersion: xl-deploy/v1
+kind: Applications
+spec:
+- name: Applications/aws-host
+  type: udm.Application
+  lastVersion: 1.0.0
+  children:
+  - name: 1.0.0
+    type: udm.DeploymentPackage
+    deployables:
+    - name: tomcat-instance
+      type: aws.ec2.InstanceSpec
+      boundTemplates:
+      - Applications/aws-host/1.0.0/sshost-template
+      instanceName: tomcat-instance
+      amiId: ami-08c757228751c5335
+      region: eu-west-3
+      securityGroup:
+      - Name:tomcat-security-group
+      instanceType: t2.micro
+      keyName: adlere-seminaire
+    - name: tomcat-sg
+      type: aws.vpc.SecurityGroupSpec
+      securityGroupName: tomcat-security-group
+      description: tomcat-security (HTTP/SSH)
+      region: eu-west-3
+      inboundRules:
+      - name: http
+        type: aws.vpc.SecurityGroupInboundRuleSpec
+        protocol: TCP
+        portRange: "8080"
+        source: 0.0.0.0/0
+      - name: ssh
+        type: aws.vpc.SecurityGroupInboundRuleSpec
+        protocol: TCP
+        portRange: "22"
+        source: 0.0.0.0/0
+    templates:
+    - name: sshost-template
+      type: template.overthere.SshHost
+      instanceName: '{{%instanceId%}}-host'
+      tags:
+      - app_server
+      os: UNIX
+      connectionType: SUDO
+      address: '{{%publicHostname%}}'
+      username: ubuntu
+      privateKeyFile: /Users/bmoussaud/.ssh/adlere-seminaire.pem
+      sudoUsername: root

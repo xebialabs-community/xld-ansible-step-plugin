@@ -10,6 +10,7 @@
 
 -->
 export PYTHONUNBUFFERED=1
+export ANSIBLE_CONFIG=ansible.cfg
 
 <#assign verbose=""/>
 <#if ansibleController.debug>
