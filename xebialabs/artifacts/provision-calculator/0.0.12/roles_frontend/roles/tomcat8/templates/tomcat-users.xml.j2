@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- {{ ansible_managed }} -->
-
 <!--
   Licensed to the Apache Software Foundation (ASF) under one or more
   contributor license agreements.  See the NOTICE file distributed with
@@ -37,16 +34,12 @@
   examples web application, do not forget to remove the <!.. ..> that surrounds
   them. You will also need to set the passwords to something appropriate.
 -->
-<!--
-  <role rolename="tomcat"/>
-  <role rolename="role1"/>
-  <user username="tomcat" password="<must-be-changed>" roles="tomcat"/>
-  <user username="both" password="<must-be-changed>" roles="tomcat,role1"/>
-  <user username="role1" password="<must-be-changed>" roles="role1"/>
--->
+<!-- user manager can access only manager section -->
+<role rolename="manager-gui" />
+<user username="{{ ui_manager_user }}" password="{{ ui_manager_pass }}" roles="manager-gui" />
 
-  <role rolename="manager-gui"/>
-  <role rolename="admin-gui"/>
-  <user username="{{ admin_username }}" password="{{ admin_password }}" roles="admin-gui,manager-gui" />
-
+<!-- user admin can access manager and admin section both -->
+<role rolename="admin-gui" />
+<user username="{{ ui_admin_username }}" password="{{ ui_admin_pass }}" roles="manager-gui,admin-gui" />
 </tomcat-users>
+

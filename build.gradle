@@ -16,6 +16,9 @@ apply plugin: 'maven'
 
 dependencies {
     compile group: 'com.xebialabs.overthere', name: 'overtherepy', version: '0.0.4'
+    //it exists a dependency with the 'InputSupplier' class in overtherpy. 19.0 is the latest version including this class.
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
+
 }
 
 repositories {

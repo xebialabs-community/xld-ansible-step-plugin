@@ -22,6 +22,12 @@ spec:
               - frontend
             roles:
               - tomcat8
+            variables:
+              tomcat_ver: '9.0.30'
+              ui_manager_user: 'manager'
+              ui_manager_pass: 'Str0ngManagerP@ssw4rd'
+              ui_admin_username: 'admin'
+              ui_admin_pass: 'Str0#ngManagerP@@@ssword'
           - name: bdd
             type: ansible.RolesSpec
             scanPlaceholders: True
@@ -50,6 +56,12 @@ spec:
               - frontend
             roles:
               - tomcat8
+            variables:
+              tomcat_ver: '9.0.30'
+              ui_manager_user: 'manager'
+              ui_manager_pass: 'Str0ngManagerP@ssw4rd'
+              ui_admin_username: 'admin'
+              ui_admin_pass: 'Str0#ngManagerP@@@ssword'
           - name: bdd
             type: ansible.RolesSpec
             scanPlaceholders: True
