@@ -29,6 +29,7 @@
         <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
         <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code" password="false"/>
+        <property name="xlPath" required="false" default="/usr/local/bin/xl" category="devops-as-code" />
         <property name="debug" category="Advanced" kind="boolean" default="false"/>
     </type>
 

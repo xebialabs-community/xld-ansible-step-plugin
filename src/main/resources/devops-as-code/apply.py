@@ -83,12 +83,14 @@ context = {'devopsAsCodePassword': ansible_controler.devopsAsCodePassword,
            'devopsAsCodeUsername': ansible_controler.devopsAsCodeUsername,
            'devopsAsCodeUrl': ansible_controler.devopsAsCodeUrl,
            'yaml_file': local_yaml_file.path,
+           'xlPath': ansible_controler.xlPath
            }
 
-command_line = "/usr/local/bin/xl --xl-deploy-password {devopsAsCodePassword} --xl-deploy-username {devopsAsCodeUsername} --xl-deploy-url {devopsAsCodeUrl} apply  -f {yaml_file} ".format(**context)
+command_line = "{xlPath} --xl-deploy-password {devopsAsCodePassword} --xl-deploy-username {devopsAsCodeUsername} --xl-deploy-url {devopsAsCodeUrl} apply -f {yaml_file} ".format(**context)
 print(command_line)
 
 import subprocess
+
 process = subprocess.Popen(command_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 process.wait()
 if process.returncode != 0:
@@ -103,4 +105,3 @@ else:
         local_session.logger.info(line)
     for line in process.stderr:
         local_session.logger.info(line)
-
