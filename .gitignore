@@ -7,3 +7,4 @@ supervisord.*
 
 .DS_Store
 xl-deploy-9.6.0-server/
+xl-deploy-9.6.1-server/

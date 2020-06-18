@@ -20,3 +20,17 @@
 <#list roles as role>
     - { role: ${role} }
 </#list>
+  tasks:
+<#list deployed.devopsAsCodeTemplates as template>
+    - name: Generate the Devops-As-Code
+      template:
+        src: ${deployed.name}.j2
+        dest: /tmp/digital.ai_xldeploy.yaml
+        mode: 0755
+    - name: Fetch the Devops-As-Code yaml file on the master
+      fetch:
+        src: /tmp/digital.ai_xldeploy.yaml
+        dest: "{{ devops_as_code_directory }}"
+        flat: no
+</#list>
+

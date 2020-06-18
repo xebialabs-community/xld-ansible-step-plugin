@@ -53,6 +53,7 @@
             <parameter name="galaxyRoles" type="list_of_string" description="Galaxy Roles"/>
             <parameter name="variables" type="map_string_string" description="variables..."/>
             <parameter name="variableFile" type="map_string_string" description="variableFile..."/>
+            <parameter name="devopsAsCodeTemplate" type="string" description="the devops as code template to process on the host side by ansible"/>
         </parameters>
         <steps>
             <os-script>
@@ -71,6 +72,7 @@
                     <ansibleController expression="true">deployed.container.ansibleController</ansibleController>
                     <deployedApplication expression="true">deployedApplication</deployedApplication>
                     <become>yes</become>
+                    <devopsAsCodeTemplate  expression="true">deployed.computedDevopsAsCodeTemplate</devopsAsCodeTemplate>
                 </freemarker-context>
                 <classpath-resources>
                     <value>ansible_step/inventory/xldeploy_ansible_inventory.ftl</value>
@@ -84,6 +86,10 @@
 
     <rule name="ansible.Roles.sshkeys.remote.loader" scope="plan">
         <planning-script-path>planning/ssh-keys-remote-loader.py</planning-script-path>
+    </rule>
+
+    <rule name="ansible.Roles.joiner.devopsascode.templates" scope="pre-plan">
+        <planning-script-path>planning/joiner.devopsascode.templates.py</planning-script-path>
     </rule>
 
     <rule name="ansible.Roles.apply" scope="deployed">
@@ -100,6 +106,7 @@
                 <galaxyRoles expression="true">deployed.galaxyRoles</galaxyRoles>
                 <variables expression="true">deployed.variables</variables>
                 <variableFile expression="true">deployed.variableFile</variableFile>
+                <devopsAsCodeTemplate expression="true">context.getAttribute("{0}_computedDevopsAsCodeTemplate".format(deployed.id))</devopsAsCodeTemplate>
             </ansible-playbook>
         </steps>
     </rule>

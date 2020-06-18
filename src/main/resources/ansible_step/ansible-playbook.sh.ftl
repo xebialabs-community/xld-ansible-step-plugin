@@ -12,11 +12,13 @@
 export PYTHONUNBUFFERED=1
 export ANSIBLE_CONFIG=ansible.cfg
 
+echo "${devopsAsCodeTemplate}" > ${deployed.name}.j2
+
 <#assign verbose=""/>
 <#if ansibleController.debug>
 <#assign verbose="-v"/>
 echo "= xldeploy_playbook.yml ="
-cat xldeploy_playbook.yml
+cat -n xldeploy_playbook.yml
 
 echo "= inventory = "
 cat ansible_step/inventory/xldeploy_ansible_inventory
@@ -26,6 +28,9 @@ cat ansible_step/xldeploy_extravars.json
 
 echo "= ansible.cfg = "
 cat ansible.cfg
+
+echo "= ${deployed.name}.j2 = "
+cat ${deployed.name}.j2
 
 echo "------ "
 find . -ls

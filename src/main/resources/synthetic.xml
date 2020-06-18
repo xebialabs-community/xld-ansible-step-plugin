@@ -29,7 +29,7 @@
         <property name="devopsAsCodeUrl" required="false" default="http://localhost:4537" category="devops-as-code"/>
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
         <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code" password="false"/>
-        <property name="xlPath" required="false" default="/usr/local/bin/xl" category="devops-as-code"  description="C:\xl-deploy-9.6.0-server\xl-cli\xl.exe or /usr/local/bin/xl"/>
+        <property name="xlPath" required="false" default="/usr/local/bin/xl" category="devops-as-code" description="C:\xl-deploy-9.6.0-server\xl-cli\xl.exe or /usr/local/bin/xl"/>
         <property name="debug" category="Advanced" kind="boolean" default="false"/>
     </type>
 
@@ -43,9 +43,17 @@
         <property name="includeDevOpsAsCodeTask" label="Include DevOpsAsCode task" kind="boolean" default="false" required="false" description="does the deployable contain a YAML definition and upload it to working directory"/>
         <property name="boundConfigurationItems" hidden="false" kind="set_of_ci" as-containment="false" required="false" referenced-type="udm.BaseConfigurationItem"/>
         <property name="applyRulesOnNOOP" label="apply Rules On NOOP" kind="boolean" default="false" required="true" category="Advanced"/>
+        <property name="devopsAsCodeTemplates" kind="set_of_ci" as-containment="true" required="false" referenced-type="devopsAsCode.Template" category="devops as code"/>
+        <property name="computedDevopsAsCodeTemplate" default="---"  hidden="true" description="property used to transport all the templates in one property to the ansible controller, used by the `ansible.Roles.joiner.devopsascode.templates` rule"/>
+    </type>
+
+    <type type="devopsAsCode.Template" extends="udm.EmbeddedDeployedArtifact"
+          container-type="ansible.Roles" deployable-type="devopsAsCode.TemplateFile">
+        <generate-deployable type="devopsAsCode.TemplateFile" extends="udm.EmbeddedDeployableArtifact"/>
     </type>
 
     <type-modification type="ansible.RolesSpec">
+        <property name="devopsAsCodeTemplates" kind="set_of_ci" as-containment="true" required="false" referenced-type="devopsAsCode.TemplateFile" category="devops as code"/>
         <property name="boundTemplates" hidden="false" required="false"
                   candidate-values-filter="filterByProvisioningPackage" description="The set of CI templates."
                   as-containment="false"
