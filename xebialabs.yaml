@@ -5,3 +5,4 @@ metadata:
    - xebialabs/defaults.yaml
    - xebialabs/application.yaml
    - xebialabs/configuration.yaml
+   - xebialabs/full_stack.yaml

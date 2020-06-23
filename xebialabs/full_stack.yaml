@@ -1,0 +1,7 @@
+apiVersion: xl/v1
+kind: Import
+metadata:
+ imports:
+   - ansible_controler.yaml
+   - aws_host.yaml
+   - application_tomcat.yaml
