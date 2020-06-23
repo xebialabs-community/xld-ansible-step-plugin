@@ -2,27 +2,53 @@
 apiVersion: xl-deploy/v1
 kind: Applications
 spec:
-  - name: Applications/java-server-application
-    type: udm.Application
-    lastVersion: 0.1.1
-    children:
-      - name: 0.1.1
-        type: udm.DeploymentPackage
-        orchestrator:
-          - parallel-by-container
-        deployables:
-          - name: tomcat
-            type: ansible.RolesSpec
-            includeDevOpsAsCodeTask: True
-            scanPlaceholders: False
-            file: !file "artifacts/tomcat/0.1.1/roles_tomcat"
-            tags:
-              - app_server
-            roles:
-              - tomcat
-            variables:
-              tomcat_ver: '9.0.30'
-              ui_manager_user: 'manager'
-              ui_manager_pass: 'Str0ngManagerP@ssw4rd'
-              ui_admin_username: 'admin'
-              ui_admin_pass: 'Str0#ngManagerP@@@ssword'
+- name: Applications/java-server-application
+  type: udm.Application
+  lastVersion: 0.1.2
+  children:
+  - name: 0.1.1
+    type: udm.DeploymentPackage
+    orchestrator:
+    - parallel-by-container
+    deployables:
+    - name: tomcat
+      type: ansible.RolesSpec
+      tags:
+      - app_server
+      scanPlaceholders: false
+      roles:
+      - tomcat
+      variables:
+        ui_admin_username: admin
+        ui_manager_pass: Str0ngManagerP@ssw4rd
+        ui_manager_user: manager
+        tomcat_ver: 9.0.30
+        ui_admin_pass: Str0#ngManagerP@@@ssword
+      includeDevOpsAsCodeTask: "true"
+      file: !file "artifacts/Applications/java-server-application/0.1.1/tomcat/roles_tomcat.zip"
+  - name: 0.1.2
+    type: udm.DeploymentPackage
+    orchestrator:
+    - parallel-by-container
+    deployables:
+    - name: tomcat
+      type: ansible.RolesSpec
+      tags:
+      - app_server
+      scanPlaceholders: false
+      preScannedPlaceholders: true
+      roles:
+      - tomcat
+      variables:
+        ui_admin_username: admin
+        ui_manager_pass: Str0ngManagerP@ssw4rd
+        ui_manager_user: manager
+        tomcat_ver: 9.0.30
+        ui_admin_pass: Str0#ngManagerP@@@ssword
+      includeDevOpsAsCodeTask: "True"
+      devopsAsCodeTemplates:
+      - name: xldeploy.yaml.j2
+        type: devopsAsCode.TemplateFile
+        scanPlaceholders: false
+        file: !file "artifacts/Applications/java-server-application/0.1.2/tomcat/xldeploy.yaml.j2/xldeploy.yaml.j2"
+      file: !file "artifacts/Applications/java-server-application/0.1.2/tomcat/roles_tomcat.zip"

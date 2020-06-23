@@ -19,7 +19,7 @@ spec:
       securityGroup:
       - Name:tomcat-security-group
       instanceType: t2.micro
-      keyName: adlere-seminaire
+      keyName: my-app-keypair
     - name: tomcat-sg
       type: aws.vpc.SecurityGroupSpec
       securityGroupName: tomcat-security-group
@@ -36,6 +36,11 @@ spec:
         protocol: TCP
         portRange: "22"
         source: 0.0.0.0/0
+    - name: my-app-kp
+      type: aws.ec2.KeyPairSpec
+      keyPairName: my-app-keypair
+      region: eu-west-3
+      pemFilePath: ssh-keypairs/myapp-keypair.pem
     templates:
     - name: sshost-template
       type: template.overthere.SshHost
@@ -46,5 +51,5 @@ spec:
       connectionType: SUDO
       address: '{{%publicHostname%}}'
       username: ubuntu
-      privateKeyFile: /Users/bmoussaud/.ssh/adlere-seminaire.pem
+      privateKeyFile: ssh-keypairs/myapp-keypair.pem
       sudoUsername: root

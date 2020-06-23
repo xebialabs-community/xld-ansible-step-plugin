@@ -4,7 +4,7 @@ kind: Applications
 spec:
 - name: Applications/ansible-controller
   type: udm.Application
-  lastVersion: 1.0.1
+  lastVersion: 1.0.0
   children:
   - name: 1.0.0
     type: udm.ProvisioningPackage
@@ -24,7 +24,7 @@ spec:
       securityGroup:
       - Name:ansible-controller-sg
       instanceType: t2.micro
-      keyName: adlere-seminaire
+      keyName: myansible-keypair
     - name: ansible-controller-sg
       type: aws.vpc.SecurityGroupSpec
       securityGroupName: ansible-controller-sg
@@ -36,6 +36,11 @@ spec:
         protocol: TCP
         portRange: "22"
         source: 0.0.0.0/0
+    - name: ansible-controller-kp
+      type: aws.ec2.KeyPairSpec
+      keyPairName: myansible-keypair
+      region: eu-west-3
+      pemFilePath: ssh-keypairs/myansible-keypair.pem
     templates:
     - name: ansible-host-template
       type: template.overthere.SshHost
@@ -52,5 +57,5 @@ spec:
       connectionType: SUDO
       address: '{{%publicHostname%}}'
       username: ubuntu
-      privateKeyFile: /Users/bmoussaud/.ssh/adlere-seminaire.pem
+      privateKeyFile: ssh-keypairs/myansible-keypair.pem
       sudoUsername: root
