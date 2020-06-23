@@ -26,7 +26,7 @@ for container in sshkey_files_container():
     context.addStep(steps.jython(
         description="Uploading {0} ssh key to the ansible controller".format(container.name, container.ansibleController.name),
         order=20,
-        script="upload_ssk_key.py",
+        script="ssh_keys/upload_ssh_key.py",
         jython_context={
             "container": container,
             "target_directory": "container.ansibleController.ansibleSShKeyFolder",
@@ -37,7 +37,7 @@ for container in sshkey_files_container():
     context.addStep(steps.jython(
         description="Delete {0} ssh key from the ansible controller".format(container.name, container.ansibleController.name),
         order=99,
-        script="remove_ssk_key.py",
+        script="ssh_keys/remove_ssh_key.py",
         jython_context={
             "container": container,
             "target_directory": "container.ansibleController.ansibleSShKeyFolder",

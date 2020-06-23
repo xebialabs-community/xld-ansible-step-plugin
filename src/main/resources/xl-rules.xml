@@ -84,11 +84,11 @@
         </steps>
     </step-macro>
 
-    <rule name="ansible.Roles.sshkeys.remote.loader" scope="plan">
-        <planning-script-path>planning/ssh-keys-remote-loader.py</planning-script-path>
+    <rule name="ansible.Roles.ssh_keys.remote.loader" scope="plan">
+        <planning-script-path>ssh_keys/planning/ssh-keys-remote-loader.py</planning-script-path>
     </rule>
 
-    <rule name="ansible.Roles.joiner.devopsascode.templates" scope="pre-plan">
+    <rule name="ansible.Roles.joiner.devopsAsCode.templates" scope="pre-plan">
         <planning-script-path>planning/joiner.devopsascode.templates.py</planning-script-path>
     </rule>
 
