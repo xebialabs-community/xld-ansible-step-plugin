@@ -15,7 +15,7 @@
 #http://ansible.pickle.io/post/86598332429/running-ansible-playbook-in-localhost
 ${host.name} ansible_connection=local ansible_python_interpreter=/usr/local/bin/python
 <#else>
- <#if host.connectionType == "SUDO">
+<#if host.connectionType == "SUDO" || host.connectionType == "INTERACTIVE_SUDO">
 ${host.name} ansible_host=${host.address} ansible_port=${host.port} ansible_user=${host.username} ansible_private_key_file=${ansibleController.ansibleSShKeyFolder}/${host.name}.pem ansible_become=yes ansible_become_method=sudo ansible_become_user=${host.sudoUsername} ansible_python_interpreter=${ansibleController.ansiblePythonInterpreter}
  <#else>
 ${host.name} ansible_host=${host.address} ansible_port=${host.port} ansible_user=${host.username} ansible_private_key_file=${ansibleController.ansibleSShKeyFolder}/${host.name}.pem ansible_python_interpreter=${ansibleController.ansiblePythonInterpreter}
