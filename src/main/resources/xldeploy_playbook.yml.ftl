@@ -11,7 +11,9 @@
 -->
 ---
 - hosts: all
-  become: ${become}
+<#if become>  
+  become: true
+</#if>
 <#if variableFile?has_content>  
   vars_files:
     - ${deployed.file.path}/${variableFile}
