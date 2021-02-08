@@ -70,8 +70,7 @@
                     <target expression="true">deployed.container</target>
                     <host expression="true">deployed.container.host</host>
                     <ansibleController expression="true">deployed.container.ansibleController</ansibleController>
-                    <deployedApplication expression="true">deployedApplication</deployedApplication>
-                    <become expression="true">deployed.container.defaultBecome</become>
+                    <deployedApplication expression="true">deployedApplication</deployedApplication>                    
                     <devopsAsCodeTemplate  expression="true">deployed.computedDevopsAsCodeTemplate</devopsAsCodeTemplate>
                 </freemarker-context>
                 <classpath-resources>

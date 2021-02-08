@@ -30,8 +30,7 @@
         <property name="devopsAsCodeUsername" required="false" default="admin" category="devops-as-code"/>
         <property name="devopsAsCodePassword" required="false" default="admin" category="devops-as-code" password="false"/>
         <property name="xlPath" required="false" default="/usr/local/bin/xl" category="devops-as-code" description="C:\xl-deploy-9.6.0-server\xl-cli\xl.exe or /usr/local/bin/xl"/>
-        <property name="debug" category="Advanced" kind="boolean" default="false"/>
-        <property name="defaultBecome" required="false" default="false" kind="boolean" category="Advanced"/>
+        <property name="debug" category="Advanced" kind="boolean" default="false"/>        
     </type>
 
     <type type="ansible.Roles" extends="udm.BaseDeployedArtifact"
